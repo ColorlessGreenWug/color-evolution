@@ -3,7 +3,7 @@ from PIL import Image
 from skimage import color
 
 def hex_to_rgb(hex):
-    return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+    return np.array([int(hex[i:i+2], 16) for i in (0, 2, 4)])
 
 # read in the hex values
 hex_values = []
@@ -21,7 +21,8 @@ for h in hex_values:
 # convert to lab
 lab_values = []
 for rgb in rgb_values:
-    lab_values.append(color.rgb2lab(*rgb))
+    rgb_image = np.array([[rgb/255]])
+    lab_values.append(color.rgb2lab(rgb_image)[0][0])
 
 # write out a txt file with the lab values
 with open("colors_selected_lab.txt", "w") as f:
